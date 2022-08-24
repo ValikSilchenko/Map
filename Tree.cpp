@@ -77,7 +77,7 @@ void Tree<T>::add(T elem) {
             } else
                 break;
         }
-//        balance(temp);
+        balance(temp);
     }
 }
 
@@ -90,39 +90,39 @@ void Tree<T>::balance(Tree::Node *node) {
         if (node->parent == node->parent->parent->right) {  // right line
             uncle = node->parent->parent->left;
             if (uncle != nullptr) {
-                if (uncle->colour == Tree::RED) {
-                    uncle->colour = Tree::BLACK;
-                    node->parent->colour = Tree::BLACK;
-                    node->parent->parent->colour = Tree::RED;
+                if (uncle->color == Tree::RED) {
+                    uncle->color = Tree::BLACK;
+                    node->parent->color = Tree::BLACK;
+                    node->parent->parent->color = Tree::RED;
                     if (node->parent->parent == root)
                         root->color = Tree::BLACK;
                     else
                         balance(node->parent->parent);
                 } else {
-                    if (node == node->parent->left) {  // X-F-G is right line with angle, else it's a straight line
+                    if (node == node->parent->right) {  // X-F-G is left line with angle, else it's a straight line
                         node = node->parent;
                         turnRight(node);
                     }
-                    node->parent->colour = Tree::BLACK;
-                    node->parent->parent->colour = Tree::RED;
+                    node->parent->color = Tree::BLACK;
+                    node->parent->parent->color = Tree::RED;
                     turnLeft(node->parent->parent);
                 }
             } else {
-                if (node == node->parent->left) { // X-F-G is right line with angle, else it's a straight line
+                if (node == node->parent->right) {  // X-F-G is left line with angle, else it's a straight line
                     node = node->parent;
                     turnRight(node);
                 }
-                node->parent->colour = Tree::BLACK;
-                node->parent->parent->colour = Tree::RED;
+                node->parent->color = Tree::BLACK;
+                node->parent->parent->color = Tree::RED;
                 turnLeft(node->parent->parent);
             }
         } else {  // left line
             uncle = node->parent->parent->right;
             if (uncle != nullptr) {
-                if (uncle->colour == Tree::RED) {
-                    uncle->colour = Tree::BLACK;
-                    node->parent->colour = Tree::BLACK;
-                    node->parent->parent->colour = Tree::RED;
+                if (uncle->color == Tree::RED) {
+                    uncle->color = Tree::BLACK;
+                    node->parent->color = Tree::BLACK;
+                    node->parent->parent->color = Tree::RED;
                     if (node->parent->parent == root)
                         root->color = Tree::BLACK;
                     else
@@ -132,16 +132,18 @@ void Tree<T>::balance(Tree::Node *node) {
                         node = node->parent;
                         turnLeft(node);
                     }
-                    node->parent->colour = Tree::BLACK;
-                    node->parent->parent->colour = Tree::RED;
+                    node->parent->color = Tree::BLACK;
+                    node->parent->parent->color = Tree::RED;
                     turnRight(node->parent->parent);
                 }
             } else {
-                if (node == node->parent->right)  // X-F-G is left line with angle, else it's a straight line
-                    turnLeft(node->parent);
-                node->colour = Tree::BLACK;
-                node->parent->colour = Tree::RED;
-                turnRight(node->parent);
+                if (node == node->parent->right) {  // X-F-G is left line with angle, else it's a straight line
+                    node = node->parent;
+                    turnLeft(node);
+                }
+                node->parent->color = Tree::BLACK;
+                node->parent->parent->color = Tree::RED;
+                turnRight(node->parent->parent);
             }
         }
     }

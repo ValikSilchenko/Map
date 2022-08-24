@@ -49,7 +49,7 @@ private:
             }
             for (int i = 0; i < level; i++)
                 std::cout << " ";
-            std::cout << node->data << "\n";
+            std::cout << node->data << " " << (node->color == RED ? "RED": "BLACK") << "\n";
             if (node->left != nullptr) {
                 pprint(node->left, level + 2);
             }
@@ -92,7 +92,7 @@ public:
             if (root->right != nullptr) {
                 pprint(root->right, 2);
             }
-            std::cout << root->data << "\n";
+            std::cout << root->data << " " << (root->color == RED ? "RED": "BLACK") << "\n";
             if (root->left != nullptr) {
                 pprint(root->left, 2);
             }
