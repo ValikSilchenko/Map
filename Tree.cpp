@@ -47,12 +47,57 @@ void Tree<T>::turnLeft(Tree::Node *node) {
 }
 
 template<class T>
-void Tree<T>::del(T elem) {
+void Tree<T>::del(const T &elem) {
+    Node *temp = root;
+    while (temp != nullptr) {
+        if (temp->data == elem)
+            break;
+        else
+            temp = elem < temp->data ? temp->left : temp->right;
+    }
+
+    if (temp != nullptr) {
+        Tree::Color colorOfDeletable;
+        Node* toDel;
+        if (temp->right == nullptr || temp->left == nullptr) {
+            toDel = temp;
+            temp = temp->right != nullptr ? temp->right : temp->left;
+            if (toDel == root)
+                root = temp;
+            else if (toDel->parent->right == toDel)
+                toDel->parent->right = temp;
+            else
+                toDel->parent->left = temp;
+
+            if (temp != nullptr)
+                temp->parent = toDel->parent;
+        } else {
+            toDel = temp->right;
+            while (toDel->left != nullptr)
+                toDel = toDel->left;
+            temp->data = toDel->data;
+
+            if (toDel->parent == temp)
+                temp->right = toDel->right;
+            else
+                toDel->parent->left = toDel->right;
+
+            if (toDel->right != nullptr)
+                toDel->right->parent = toDel->parent;
+        }
+
+        colorOfDeletable = toDel->color;
+        delete toDel;
+    }
+}
+
+template<class T>
+void Tree<T>::balanceAfterDel(Tree::Node *node) {
 
 }
 
 template<class T>
-void Tree<T>::add(T elem) {
+void Tree<T>::add(const T &elem) {
     if (root == nullptr)
         root = new Node(elem, BLACK);
     else {

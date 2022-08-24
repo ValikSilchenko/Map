@@ -42,6 +42,8 @@ private:
 
     void balanceAfterAdd(Node *node);
 
+    void balanceAfterDel(Node *node);
+
     void pprint(Node *node, const int &level) {  // debug
         if (node != nullptr) {
             if (node->right != nullptr) {
@@ -83,9 +85,9 @@ public:
     }
 
     // Tree(Tree const &other)
-    void add(T elem);
+    void add(const T &elem);
 
-    void del(T elem);
+    void del(const T &elem);
 
     void print() {  // debug
         if (root != nullptr) {
