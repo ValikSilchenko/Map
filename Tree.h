@@ -25,6 +25,13 @@ private:
                   right(_right),
                   left(_left),
                   color(_color) {}
+
+        explicit Node(T _data, Color _color = RED)
+                : data(_data),
+                  parent(nullptr),
+                  right(nullptr),
+                  left(nullptr),
+                  color(_color) {}
     };
 
     Node *root;
