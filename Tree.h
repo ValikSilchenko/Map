@@ -40,7 +40,7 @@ private:
 
     void turnLeft(Node *node);
 
-    void balance(Node *node);
+    void balanceAfterAdd(Node *node);
 
     void pprint(Node *node, const int &level) {  // debug
         if (node != nullptr) {

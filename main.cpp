@@ -14,6 +14,11 @@ int main() {
     tree.add(0);
     tree.print();
     std::cout << "-----------------\n";
-
+    tree.add(7);
+    tree.add(25);
+    tree.print();
+    std::cout << "-----------------\n";
+    tree.add(6);
+    tree.print();
     return 0;
 }
