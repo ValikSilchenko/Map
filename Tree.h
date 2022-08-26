@@ -18,7 +18,7 @@ private:
         Node *parent;
         Color color;
 
-        explicit Node(T _data, Node *_parent = nullptr, Node *_right = nullptr, Node *_left = nullptr,
+        explicit Node(const T& _data, Node *_parent = nullptr, Node *_right = nullptr, Node *_left = nullptr,
                       Color _color = RED)
                 : data(_data),
                   parent(_parent),
@@ -26,7 +26,7 @@ private:
                   left(_left),
                   color(_color) {}
 
-        explicit Node(T _data, Color _color = RED)
+        explicit Node(const T& _data, Color _color = RED)
                 : data(_data),
                   parent(nullptr),
                   right(nullptr),

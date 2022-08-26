@@ -81,6 +81,7 @@ void Tree<T>::del(const T &elem) {
                 temp->right = toDel->right;
             else
                 toDel->parent->left = toDel->right;
+            temp = toDel->right;
 
             if (toDel->right != nullptr)
                 toDel->right->parent = toDel->parent;
@@ -88,12 +89,75 @@ void Tree<T>::del(const T &elem) {
 
         colorOfDeletable = toDel->color;
         delete toDel;
+
+        if (colorOfDeletable == Tree::BLACK) {
+            balanceAfterDel(temp);
+        }
     }
 }
 
 template<class T>
 void Tree<T>::balanceAfterDel(Tree::Node *node) {
+    if (node != nullptr) {
+        if (node == root || node->color == Tree::RED)
+            node->color = Tree::BLACK;
+        else {
+            Node* brother;
+            bool isLeft;
+            if (node->parent->right == node) {
+                brother = node->parent->left;
+                isLeft = false;
+            } else {
+                brother = node->parent->right;
+                isLeft = true;
+            }
 
+            if (brother->color == Tree::BLACK) {
+                Tree::Color leftChildColor, rightChildColor;
+
+                leftChildColor = brother->left != nullptr ? brother->left->color : Tree::BLACK;
+                rightChildColor = brother->right != nullptr ? brother->right->color : Tree::BLACK;
+
+                if (rightChildColor == Tree::RED && isLeft || leftChildColor == Tree::RED && !isLeft) {
+                    brother->color = node->parent->color;
+                    node->parent->color = Tree::BLACK;
+                    if (isLeft) {
+                        brother->right->color = Tree::BLACK;
+                        turnLeft(node->parent);
+                    } else {
+                        brother->left->color = Tree::BLACK;
+                        turnRight(node->parent);
+                    }
+                } else if (leftChildColor == Tree::RED && isLeft || rightChildColor == Tree::RED && !isLeft) {
+                    if (isLeft) {
+                        brother->left->color = Tree::BLACK;
+                        turnRight(brother);
+                    } else {
+                        brother->right->color = Tree::BLACK;
+                        turnLeft(brother);
+                    }
+                    brother->color = Tree::RED;
+                    balanceAfterDel(node);
+                } else {
+                    if (node->parent->color == Tree::RED) {
+                        node->color = Tree::BLACK;
+                        brother->color = Tree::RED;
+                    } else {
+                        brother->color = Tree::RED;
+                        balanceAfterDel(node->parent);
+                    }
+                }
+            } else {
+                brother->color = Tree::BLACK;
+                node->parent->color = Tree::RED;
+                if (isLeft)
+                    turnLeft(node->parent);
+                else
+                    turnRight(node->parent);
+                balanceAfterDel(node);
+            }
+        }
+    }
 }
 
 template<class T>
