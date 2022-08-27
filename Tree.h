@@ -3,32 +3,36 @@
 
 #include <iostream>
 
-template<class T>
+template<class K, class V>
 class Tree {
 private:
-    enum Color {
+    enum Color : bool {
         RED,
         BLACK
     };
 
     struct Node {
-        T data;
+        K key;
+        V value;
         Node *left;
         Node *right;
         Node *parent;
         Color color;
 
-        explicit Node(const T& _data, Node *_parent = nullptr, Node *_right = nullptr, Node *_left = nullptr,
+        explicit Node(const K &_key, Node *_parent = nullptr, Node *_right = nullptr,
+                      Node *_left = nullptr,
                       Color _color = RED)
-                : data(_data),
+                : key(_key),
+                  value(),
                   parent(_parent),
                   right(_right),
                   left(_left),
                   color(_color) {}
 
-        explicit Node(const T& _data, Color _color = RED)
-                : data(_data),
-                  parent(nullptr),
+        explicit Node(const K &_key, Color _color = RED, Node *_parent = nullptr)
+                : key(_key),
+                  value(),
+                  parent(_parent),
                   right(nullptr),
                   left(nullptr),
                   color(_color) {}
@@ -51,7 +55,7 @@ private:
             }
             for (int i = 0; i < level; i++)
                 std::cout << " ";
-            std::cout << node->data << " " << (node->color == RED ? "RED": "BLACK") << "\n";
+            std::cout << node->key << " " << (node->color == RED ? "RED" : "BLACK") << "\n";
             if (node->left != nullptr) {
                 pprint(node->left, level + 2);
             }
@@ -62,8 +66,8 @@ public:
     Tree() : root(nullptr) {}
 
     ~Tree() {
-        Node* temp = root;
-        Node* toDel;
+        Node *temp = root;
+        Node *toDel;
         while (temp != nullptr) {
             if (temp->left != nullptr)
                 temp = temp->left;
@@ -73,7 +77,7 @@ public:
                 toDel = temp;
                 if (temp != root) {
                     temp = temp->parent;
-                    if (toDel->data < temp->data)
+                    if (toDel->key < temp->key)
                         temp->left = nullptr;
                     else
                         temp->right = nullptr;
@@ -85,16 +89,16 @@ public:
     }
 
     // Tree(Tree const &other)
-    void add(const T &elem);
+    void add(const K &key);
 
-    void del(const T &elem);
+    void del(const K &key);
 
     void print() {  // debug
         if (root != nullptr) {
             if (root->right != nullptr) {
                 pprint(root->right, 2);
             }
-            std::cout << root->data << " " << (root->color == RED ? "RED": "BLACK") << "\n";
+            std::cout << root->key << " " << (root->color == RED ? "RED" : "BLACK") << "\n";
             if (root->left != nullptr) {
                 pprint(root->left, 2);
             }

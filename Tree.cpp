@@ -1,7 +1,7 @@
 #include "Tree.h"
 
-template<class T>
-void Tree<T>::turnRight(Tree::Node *node) {
+template<class K, class V>
+void Tree<K, V>::turnRight(Tree::Node *node) {
     if (node->left != nullptr) {
         Node *temp = node->left->right;
         node->left->right = node;
@@ -9,7 +9,7 @@ void Tree<T>::turnRight(Tree::Node *node) {
         if (node == root)
             root = node->left;
         else {
-            if (node->data < node->parent->data)
+            if (node->key < node->parent->key)
                 node->parent->left = node->left;
             else
                 node->parent->right = node->left;
@@ -23,8 +23,8 @@ void Tree<T>::turnRight(Tree::Node *node) {
     }
 }
 
-template<class T>
-void Tree<T>::turnLeft(Tree::Node *node) {
+template<class K, class V>
+void Tree<K, V>::turnLeft(Tree::Node *node) {
     if (node->right != nullptr) {
         Node *temp = node->right->left;
         node->right->left = node;
@@ -32,7 +32,7 @@ void Tree<T>::turnLeft(Tree::Node *node) {
         if (node == root)
             root = node->right;
         else {
-            if (node->data < node->parent->data)
+            if (node->key < node->parent->key)
                 node->parent->left = node->right;
             else
                 node->parent->right = node->right;
@@ -46,19 +46,18 @@ void Tree<T>::turnLeft(Tree::Node *node) {
     }
 }
 
-template<class T>
-void Tree<T>::del(const T &elem) {
+template<class K, class V>
+void Tree<K, V>::del(const K &key) {
     Node *temp = root;
     while (temp != nullptr) {
-        if (temp->data == elem)
+        if (temp->key == key)
             break;
         else
-            temp = elem < temp->data ? temp->left : temp->right;
+            temp = key < temp->key ? temp->left : temp->right;
     }
 
     if (temp != nullptr) {
-        Tree::Color colorOfDeletable;
-        Node* toDel;
+        Node *toDel;
         if (temp->right == nullptr || temp->left == nullptr) {
             toDel = temp;
             temp = temp->right != nullptr ? temp->right : temp->left;
@@ -75,7 +74,7 @@ void Tree<T>::del(const T &elem) {
             toDel = temp->right;
             while (toDel->left != nullptr)
                 toDel = toDel->left;
-            temp->data = toDel->data;
+            temp->key = toDel->key;
 
             if (toDel->parent == temp)
                 temp->right = toDel->right;
@@ -87,22 +86,21 @@ void Tree<T>::del(const T &elem) {
                 toDel->right->parent = toDel->parent;
         }
 
-        colorOfDeletable = toDel->color;
-        delete toDel;
-
-        if (colorOfDeletable == Tree::BLACK) {
-            balanceAfterDel(temp);
+        if (toDel->color == Tree::BLACK) {
+            if (temp != nullptr)
+                balanceAfterDel(temp);
         }
+        delete toDel;
     }
 }
 
-template<class T>
-void Tree<T>::balanceAfterDel(Tree::Node *node) {
+template<class K, class V>
+void Tree<K, V>::balanceAfterDel(Tree::Node *node) {
     if (node != nullptr) {
         if (node == root || node->color == Tree::RED)
             node->color = Tree::BLACK;
         else {
-            Node* brother;
+            Node *brother;
             bool isLeft;
             if (node->parent->right == node) {
                 brother = node->parent->left;
@@ -160,26 +158,26 @@ void Tree<T>::balanceAfterDel(Tree::Node *node) {
     }
 }
 
-template<class T>
-void Tree<T>::add(const T &elem) {
+template<class K, class V>
+void Tree<K, V>::add(const K &key) {
     if (root == nullptr)
-        root = new Node(elem, BLACK);
+        root = new Node(key, BLACK);
     else {
         Node *temp = root;
         while (true) {
-            if (elem < temp->data) {  // left branch
+            if (key < temp->key) {  // left branch
                 if (temp->left != nullptr)
                     temp = temp->left;
                 else {
-                    temp->left = new Node(elem, temp);
+                    temp->left = new Node(key, temp);
                     temp = temp->left;
                     break;
                 }
-            } else if (temp->data < elem) {  // right branch
+            } else if (temp->key < key) {  // right branch
                 if (temp->right != nullptr)
                     temp = temp->right;
                 else {
-                    temp->right = new Node(elem, temp);
+                    temp->right = new Node(key, temp);
                     temp = temp->right;
                     break;
                 }
@@ -190,8 +188,8 @@ void Tree<T>::add(const T &elem) {
     }
 }
 
-template<class T>
-void Tree<T>::balanceAfterAdd(Tree::Node *node) {
+template<class K, class V>
+void Tree<K, V>::balanceAfterAdd(Tree::Node *node) {
     if (node->parent->color == Tree::RED) {
         Node *uncle;
         Tree::Color uncleColor;

@@ -2,7 +2,7 @@
 #include "Tree.cpp"
 
 int main() {
-    Tree<int> tree;
+    Tree<int, int> tree;
     tree.add(12);
     tree.add(11);
     tree.add(10);
@@ -26,10 +26,14 @@ int main() {
     tree.print();
     std::cout << "-----------------\n";
     tree.del(15);
-    tree.add(15);
+
     tree.print();
     std::cout << "-----------------\n";
-//    tree.print();
+    tree.del(10);
+//    tree.add(17);
+//    tree.add(15);
+    tree.print();
+    std::cout << "-----------------\n";
 
     return 0;
 }
